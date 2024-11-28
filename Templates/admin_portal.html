@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .star {
+        color: rgb(248, 11, 11);
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Welcome to Admin Portal, {{ user_name }}</h2>
+    <p>Email: {{ email }}</p>
+
+    <h3>User List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>
+            {{ user.username }}{% if user.username == 'Admin' %}<span
+              class="star"
+              >*</span
+            >{% endif %}
+          </td>
+          <td>{{ user.email }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+  </body>
+</html>
