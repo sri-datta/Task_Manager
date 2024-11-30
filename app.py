@@ -46,8 +46,8 @@ oauth = OAuth(app)
 
 google = oauth.register(
     name='google',
-    client_id='your_google_client_id',  # Replace with your Google Client ID
-    client_secret='your_google_client_secret',  # Replace with your Google Client Secret
+    client_id='891013572460-cso4q4t5gha56v47r8khfv2siip8gsjc.apps.googleusercontent.com',  # Replace with your Google Client ID
+    client_secret='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',  # Replace with your Google Client Secret
     access_token_url='https://accounts.google.com/o/oauth2/token',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     api_base_url='https://www.googleapis.com/oauth2/v1/',
@@ -292,7 +292,10 @@ def admin_portal():
 
 @app.route('/login')
 def login():
-    return google.authorize(callback=url_for('authorize', _external=True))
+    redirect_uri = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+
 
 @app.route('/logout')
 def logout():
@@ -324,11 +327,11 @@ def create_user():
 
 @app.route('/authorize')
 def authorize():
-    # Get the token after the user authorizes
-    token = oauth.google.authorize_access_token()
+    # Exchange the authorization code for an access token
+    token = google.authorize_access_token()
     
     # Fetch user info from Google
-    user_info = oauth.google.get('userinfo').json()
+    user_info = google.get('userinfo').json()
     session['email'] = user_info.get('email')
     session['user_name'] = user_info.get('name')
     
@@ -344,6 +347,7 @@ def authorize():
         user_id = create_users(email, 'default_password', username)
         session['user_id'] = user_id
 
+    # Redirect to the user's dashboard
     return redirect(url_for('dashboard', user_id=session['user_id']))
 
 

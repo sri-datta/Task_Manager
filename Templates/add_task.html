@@ -4,17 +4,80 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+      }
+      .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .form-container h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+      }
+      .btn-back {
+        margin-bottom: 15px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Add Task</h1>
-    <form action="/dashboard/{{ user_id }}/tasks/add_task" method="POST">
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required /><br /><br />
-      <label for="description">Description:</label>
-      <textarea id="description" name="description"></textarea><br /><br />
-      <label for="due_date">Due Date:</label>
-      <input type="date" id="due_date" name="due_date" required /><br /><br />
-      <input type="submit" value="Submit" />
-    </form>
+    <div class="container">
+      <a href="{{ url_for('index', user_id=user_id) }}" class="btn btn-secondary btn-back">
+        ← Back to Tasks
+      </a>
+      <div class="form-container">
+        <h1>Add Task</h1>
+        <form action="/dashboard/{{ user_id }}/tasks/add_task" method="POST">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              placeholder="Enter task title"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              placeholder="Enter task description"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="due_date">Due Date:</label>
+            <input
+              type="date"
+              class="form-control"
+              id="due_date"
+              name="due_date"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

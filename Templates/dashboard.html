@@ -8,14 +8,66 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+      }
+      .hero {
+        background: linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+          ),
+          url("https://source.unsplash.com/random/1920x1080?workspace");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 50px 0;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        font-weight: 300;
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .card .card-body {
+        text-align: center;
+      }
+      .card .btn {
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Todo App</a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Welcome, {{ user_name }}!</a>
+          <li class="nav-item">
+            <span class="navbar-text text-white mr-3">Welcome, {{ user_name }}!</span>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
@@ -24,18 +76,43 @@
       </div>
     </nav>
 
+    <div class="hero">
+      <h1>Welcome to Your Dashboard</h1>
+      <p>Manage your tasks efficiently and stay organized</p>
+    </div>
+
     <div class="container mt-5">
-      <h3>Dashboard</h3>
-      <div class="text-center">
-        <a
-          href="{{ url_for('index', user_id=user_id) }}"
-          class="btn btn-primary btn-lg mr-3"
-          >View Tasks</a
-        >
-        <a href="/swagger" class="btn btn-secondary btn-lg"
-          >View Documentation</a
-        >
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">View Tasks</h5>
+              <p class="card-text">View and manage your task list.</p>
+              <a
+                href="{{ url_for('index', user_id=user_id) }}"
+                class="btn btn-primary btn-block"
+              >
+                <i class="fas fa-tasks"></i> View Tasks
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">View Documentation</h5>
+              <p class="card-text">Check out the API documentation.</p>
+              <a href="/swagger" class="btn btn-secondary btn-block">
+                <i class="fas fa-book"></i> View Documentation
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   </body>
 </html>
