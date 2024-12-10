@@ -1,4 +1,4 @@
-CPSC 449 - WEB BACKEND ENGINEERING
+#CPSC 449 - WEB BACKEND ENGINEERING
 
 Task Manager Web Application
 This repository contains a Flask-based web application for managing tasks. Users can create, view, update, and delete tasks, with authentication and authorization mechanisms in place.
