@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Day</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Plan Your Day</h2>
+        <form method="POST" action="{{ url_for('plan_day', user_id=user_id) }}">
+            <!-- Tasks Input -->
+            <div class="form-group">
+                <label for="tasks">Enter Tasks</label>
+                <textarea 
+                    name="tasks" 
+                    id="tasks" 
+                    class="form-control" 
+                    rows="5" 
+                    placeholder="Enter your tasks separated by commas, e.g., 'Exercise, Study, Meeting'"
+                    title="Separate tasks with commas">{{ tasks }}</textarea>
+            </div>
+
+            <!-- Profile Role Dropdown -->
+            <div class="form-group">
+                <label for="profile">Select Your Role</label>
+                <select name="profile" id="profile" class="form-control" title="Choose your role">
+                    <option value="" disabled selected>Select your role...</option>
+                    <option value="Student" {% if profile == 'Student' %}selected{% endif %}>Student</option>
+                    <option value="Worker" {% if profile == 'Worker' %}selected{% endif %}>Worker</option>
+                    <option value="Doctor" {% if profile == 'Doctor' %}selected{% endif %}>Doctor</option>
+                    <option value="Engineer" {% if profile == 'Engineer' %}selected{% endif %}>Engineer</option>
+                    <option value="Teacher" {% if profile == 'Teacher' %}selected{% endif %}>Teacher</option>
+                    <option value="Freelancer" {% if profile == 'Freelancer' %}selected{% endif %}>Freelancer</option>
+                    <option value="Artist" {% if profile == 'Artist' %}selected{% endif %}>Artist</option>
+                    <option value="Entrepreneur" {% if profile == 'Entrepreneur' %}selected{% endif %}>Entrepreneur</option>
+                    <option value="Researcher" {% if profile == 'Researcher' %}selected{% endif %}>Researcher</option>
+                    <option value="Other" {% if profile == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <!-- Goal Dropdown -->
+            <div class="form-group">
+                <label for="goal">Select Your Goal for the Day</label>
+                <select name="goal" id="goal" class="form-control" title="Choose your goal for the day">
+                    <option value="" disabled selected>Select your goal...</option>
+                    <option value="Go Easy" {% if goal == 'Go Easy' %}selected{% endif %}>Go Easy</option>
+                    <option value="Get Most Work Done" {% if goal == 'Get Most Work Done' %}selected{% endif %}>Get Most Work Done</option>
+                    <option value="Focus on Learning" {% if goal == 'Focus on Learning' %}selected{% endif %}>Focus on Learning</option>
+                    <option value="Take Balanced Breaks" {% if goal == 'Take Balanced Breaks' %}selected{% endif %}>Take Balanced Breaks</option>
+                    <option value="Prepare for Tomorrow" {% if goal == 'Prepare for Tomorrow' %}selected{% endif %}>Prepare for Tomorrow</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block">Generate Schedule</button>
+        </form>
+
+        <!-- Display Generated Schedule -->
+        {% if schedule %}
+            <div class="mt-5">
+                <h3 class="text-center">Schedule for the Day</h3>
+                <div class="border rounded p-3 bg-light">
+                    <pre>{{ schedule }}</pre>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Back to Dashboard -->
+        <a href="{{ url_for('dashboard', user_id=user_id) }}" class="btn btn-secondary btn-block mt-3">Back to Dashboard</a>
+    </div>
+
+    <!-- Bootstrap JS for interactivity -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

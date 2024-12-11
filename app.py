@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, jsonify,url_for,ses
 # from authlib.integrations.flask.client import OAuth
 import pymysql
 from authlib.integrations.flask_client import OAuth
-
+import openai
 import ssl
 import socket
 import bcrypt
@@ -13,8 +13,39 @@ from functools import wraps
 from wtforms import Form, StringField, TextAreaField, DateField, BooleanField, validators
 from flask_caching import Cache
 from flask_swagger_ui import get_swaggerui_blueprint
+from openai import OpenAI
 
+# Initialize OpenAI client
+client = OpenAI(api_key="") #replace your api key
+def generate_schedule(tasks, role, goal):
+    # Instruction for the AI to generate a schedule
+    instruct = (
+        f"Please create a detailed schedule with timestamps for a {role} whose goal for the day is '{goal}'. "
+        f"Ensure all tasks from the provided list are included, balanced throughout the day, and appropriately aligned with the goal '{goal}'. "
+        f"Add meaningful breaks and suggest activities (not exceeding 1 hour) that can enhance the productivity or well-being of a {role}. "
+        f"Format: 'Time - Task description'. Fix any spelling mistakes you find. Just give me the schedule and nothing else. No explanation, nothing. "
+        f"Make sure the schedule reflects the best practices for a {role} with the goal '{goal}' while retaining all provided tasks."
+    )
+    
+    # Combine tasks and the instruction into the prompt
+    prompt = tasks + "\n\n" + instruct
 
+    try:
+        # Call OpenAI API for generating the schedule
+        completion = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are an assistant that generates schedules."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        # Extract and clean the schedule from the response
+        schedule = completion.choices[0].message.content.strip()
+        return schedule
+    except Exception as e:
+        print(f"Error generating schedule: {e}")
+        return "Failed to generate schedule. Please try again."
 
 app = Flask(__name__)
 app.secret_key = '720121a9e63ae0f982894dd2260a5391faf83b5ef5119b65'
@@ -46,8 +77,8 @@ oauth = OAuth(app)
 
 google = oauth.register(
     name='google',
-    client_id='891013572460-cso4q4t5gha56v47r8khfv2siip8gsjc.apps.googleusercontent.com',  # Replace with your Google Client ID
-    client_secret='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',  # Replace with your Google Client Secret
+    client_id='',  # Replace with your Google Client ID
+    client_secret='',  # Replace with your Google Client Secret
     access_token_url='https://accounts.google.com/o/oauth2/token',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     api_base_url='https://www.googleapis.com/oauth2/v1/',
@@ -62,12 +93,13 @@ google.redirect_uri = 'http://localhost:5000/authorize'
 
 
 # MySQL Configuration
+# Replace Your Database Config
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Sridatta'
-app.config['MYSQL_DB'] = 'task_manager'
-app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_HOST'] = ''
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
+app.config['MYSQL_PORT'] = 
 
 
 
@@ -426,6 +458,30 @@ def delete_task(user_id,task_id):
     else:
         # If the request method is not DELETE, return a Method Not Allowed error
         return jsonify({"error": "Method Not Allowed"}), 405
+    
+
+@app.route('/dashboard/<int:user_id>/plan_day', methods=['GET', 'POST'])
+@login_required
+def plan_day(user_id):
+    if request.method == 'POST':
+        # Retrieve tasks, role, and goal from the form
+        tasks = request.form.get('tasks')
+        role = request.form.get('profile')  # Retrieve the selected role
+        goal = request.form.get('goal')    # Retrieve the selected goal
+        print(f"Tasks: {tasks}, Role: {role}, Goal: {goal}")
+
+        if tasks and role and goal:
+            # Call OpenAI API to generate the schedule
+            schedule = generate_schedule(tasks, role, goal)  # Pass tasks, role, and goal to the function
+            return render_template('plan_day.html', user_id=user_id, schedule=schedule, tasks=tasks, role=role, goal=goal)
+        else:
+            flash("Please enter your tasks, select your role, and choose your goal.", "warning")
+            return redirect(url_for('plan_day', user_id=user_id))
+
+    return render_template('plan_day.html', user_id=user_id, tasks='', schedule='', role='', goal='')
+
+
+   
 
 
 
