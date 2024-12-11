@@ -12,6 +12,8 @@ The Task Manager Web Application uses Flask, a lightweight Python web framework.
 - Session Management: User sessions are maintained using Flask's session management system, allowing users to stay logged in across multiple requests.
 - RESTful API: The application provides RESTful API endpoints for interacting with tasks, allowing integration with other services or front-end applications.
 - Admin Portal: An admin portal allows administrators to manage user accounts. Administrators can view user accounts from the portal.
+- We added the AI feature that will help to plan the day based on the unorganized task list, user role, and the goal for the day. Initially, we took 10 dummy roles: student, doctor, engineer, artist, etc. The day can be planned using 5 goal models: easy mode, productivity mode, learning mode, and so on.
+- The form data will be submitted, and then the OpenAI's GPT4o model will prepare the schedule for the day based on the requirements. 
 
 Scalable Strategies:
 - Caching: Redis is used as a caching layer to improve performance by caching frequently accessed data.
