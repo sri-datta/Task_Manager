@@ -84,12 +84,5 @@ python app.py
    - Password: Admin@123
 - Manage user accounts and view user details from the admin dashboard.
 
-## Project Contribution
-
-- Frontend - Mohammed Abrarullah
-- Flask Backend - Sri Datta Venga
-- AI Integration - Sachin lodhi
-- Database - Akshay sadawarte
-
 ## Contributing
 Contributions are welcome! Feel free to open issues or pull requests for any improvements or feature additions.
